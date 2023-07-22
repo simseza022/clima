@@ -1,4 +1,3 @@
-import 'package:clima/screens/location_screen.dart';
 import 'package:clima/services/location.dart';
 import 'package:clima/services/networking.dart';
 import 'package:clima/utilities/location_screen_data.dart';
@@ -24,21 +23,29 @@ class _LoadingScreenState extends State<LoadingScreen> {
     getLocation();
   }
 
-  void getLocation() async {
-    await location.determinePosition();
-    String url =
-        'https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&appid=$apiKey';
-    NetworkHelper networkHelper = NetworkHelper(url);
-    var decodedData = await networkHelper.getData();
-    print(decodedData);
-    double temp = decodedData['main']['temp'];s
-    String city = decodedData['name'];
-    print("temperature : $temp");
 
-    Navigator.pushNamed(context, '/location_screen',
-        arguments: LocationScreenData(temp, city)
-    );
+  void getLocation() async {
+    try{
+      await location.determinePosition();
+      String url =
+          'https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&appid=$apiKey';
+      NetworkHelper networkHelper = NetworkHelper(url);
+      var decodedData = await networkHelper.getData();
+      print(decodedData);
+      double temp = decodedData['main']['temp'];
+      String city = decodedData['name'];
+      print("temperature : $temp");
+
+      Navigator.pushNamedAndRemoveUntil(context, '/location_screen',
+          (Route<dynamic> route)=>false,
+          arguments: LocationScreenData(temp, city)
+      );
+    }catch(e){
+      Navigator.pushNamedAndRemoveUntil(context, '/location_screen',(Route<dynamic> route)=>false);
+    }
+
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +62,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       color: Colors.blueAccent,
       waveColor: Colors.amberAccent,
       size: 70,
+
     );
     return const Scaffold(
       body: Center(child: spinkit2),

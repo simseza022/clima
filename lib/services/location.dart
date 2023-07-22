@@ -4,6 +4,7 @@ class Location{
 
   late double latitude;
   late double longitude;
+  bool isLocationServicesEnabled = false;
 
   Location();
 
@@ -44,6 +45,7 @@ class Location{
     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
     latitude = position.latitude;
     longitude = position.longitude;
+    isLocationServicesEnabled = false;
     return position;
   }
 
