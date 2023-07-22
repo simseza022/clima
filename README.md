@@ -4,13 +4,10 @@ A weather app
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This application uses the Open Weather API and pulls data from it, 
 
-A few resources to get you started if this is your first Flutter project:
+It dislays the data in a more visually appealing way.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+The objecting is to learn how to pull data from an API and structure multiple widgets.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Inspiration: Samsung weather app
