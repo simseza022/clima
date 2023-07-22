@@ -6,7 +6,7 @@ A weather app
 
 This application uses the Open Weather API and pulls data from it, 
 
-It dislays the data in a more visually appealing way.
+It displays the data in a more visually appealing way.
 
 The objecting is to learn how to pull data from an API and structure multiple widgets.
 
