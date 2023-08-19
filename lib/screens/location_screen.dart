@@ -7,12 +7,17 @@ import 'package:clima/utilities/constants.dart';
 import '../services/networking.dart';
 
 class LocationScreen extends StatefulWidget {
+  var locationScreenData;
+
+  LocationScreen({this.locationScreenData});
   @override
   _LocationScreenState createState() => _LocationScreenState();
 }
 
 class _LocationScreenState extends State<LocationScreen> {
   String apiKey = "f7731327e7e07896796f97e5fc8794c6";
+  late LocationScreenData locationScreenData;
+
   @override
   Widget build(BuildContext context) {
     var args = ModalRoute.of(context)?.settings.arguments;
@@ -28,11 +33,10 @@ class _LocationScreenState extends State<LocationScreen> {
         ),
         constraints: const BoxConstraints.expand(),
         child: SafeArea(
-            child: args == null
-                ? locationDisabledError()
-                : locationServicesEnabled(args as LocationScreenData)),
+            child: widget.locationScreenData == null? locationDisabledError()
+                : locationServicesEnabled(widget.locationScreenData),
       ),
-    );
+    ));
   }
 
   Widget locationDisabledError() {
@@ -64,6 +68,12 @@ class _LocationScreenState extends State<LocationScreen> {
       ],
     );
   }
+  dynamic _getData() async{
+    WeatherModel weatherModel =  WeatherModel();
+    var data = await weatherModel.getLocationWeather();
+    return data;
+  }
+
 
   Column locationServicesEnabled(LocationScreenData data) {
     int tempInDegrees = (data.temperature - 273.15).round();
@@ -79,14 +89,23 @@ class _LocationScreenState extends State<LocationScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                WeatherModel().getLocationWeather().then((d){
+                  setState(() {
+                    widget.locationScreenData = LocationScreenData(d['main']['temp'], d['name']);
+                  });
+                });
+
+              },
               child: const Icon(
                 Icons.near_me,
                 size: 50.0,
               ),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/city_screen');
+              },
               child: const Icon(
                 Icons.location_city,
                 size: 50.0,
@@ -126,6 +145,7 @@ class _LocationScreenState extends State<LocationScreen> {
       ],
     );
   }
+
   void getLocation() async {
     try{
       Location location = Location();

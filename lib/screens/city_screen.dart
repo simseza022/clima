@@ -24,16 +24,21 @@ class _CityScreenState extends State<CityScreen> {
             children: <Widget>[
               Align(
                 alignment: Alignment.topLeft,
-                child: TextButton(
-                  onPressed: () {},
-                  child: const Icon(
-                    Icons.arrow_back_ios,
-                    size: 50.0,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Icon(
+                      Icons.arrow_back_ios,
+                      size: 40.0,
+                    ),
                   ),
                 ),
               ),
               Container(
-                padding: EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(20.0),
                 child: null,
               ),
               TextButton(

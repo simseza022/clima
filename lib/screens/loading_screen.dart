@@ -1,8 +1,10 @@
+import 'package:clima/screens/location_screen.dart';
 import 'package:clima/services/location.dart';
 import 'package:clima/services/networking.dart';
 import 'package:clima/utilities/location_screen_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:clima/services/weather.dart';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -10,8 +12,6 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  late Location location = Location();
-  String apiKey = "f7731327e7e07896796f97e5fc8794c6";
   /*-----Lifecycle methods for a stateful widget------
   * 1. initState() -> gets called first when the widget is created and added into the widget tree.
   * 2. build() -> gets called everytime when our stateful widget gets built or rebuilt(via state method)
@@ -26,22 +26,25 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   void getLocation() async {
     try{
-      await location.determinePosition();
-      String url =
-          'https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&appid=$apiKey';
-      NetworkHelper networkHelper = NetworkHelper(url);
-      var decodedData = await networkHelper.getData();
-      print(decodedData);
+
+      var decodedData = await WeatherModel().getLocationWeather();
+      print('Data--------------------------------->$decodedData');
       double temp = decodedData['main']['temp'];
       String city = decodedData['name'];
       print("temperature : $temp");
-
-      Navigator.pushNamedAndRemoveUntil(context, '/location_screen',
-          (Route<dynamic> route)=>false,
-          arguments: LocationScreenData(temp, city)
-      );
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
+        return LocationScreen(locationScreenData: LocationScreenData(temp, city));
+      }), (route) => false);
+// temp      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
+//         return LocationScreen(LocationScreenData(temp, city));
+//       }), (route) => false)
+      // Navigator.pushNamedAndRemoveUntil(context, '/location_screen',
+      //     (Route<dynamic> route)=>false,
+      //     arguments: LocationScreenData(temp, city)
+      // );
     }catch(e){
       Navigator.pushNamedAndRemoveUntil(context, '/location_screen',(Route<dynamic> route)=>false);
+
     }
 
   }
