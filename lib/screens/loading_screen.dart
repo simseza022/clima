@@ -43,7 +43,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
       //     arguments: LocationScreenData(temp, city)
       // );
     }catch(e){
-      Navigator.pushNamedAndRemoveUntil(context, '/location_screen',(Route<dynamic> route)=>false);
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
+        return LocationScreen(locationScreenData: null);
+      }), (route) => false);
 
     }
 

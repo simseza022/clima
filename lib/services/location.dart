@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'dart:html';
+
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 
 class Location{
@@ -47,6 +51,13 @@ class Location{
     longitude = position.longitude;
     isLocationServicesEnabled = false;
     return position;
+  }
+
+
+  Future<List<dynamic>> readJsonFile() async {
+    final String response = await rootBundle.loadString('city.list.json');
+    final data = await json.decode(response);
+    return data;
   }
 
 }

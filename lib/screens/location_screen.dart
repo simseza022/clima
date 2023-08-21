@@ -59,7 +59,12 @@ class _LocationScreenState extends State<LocationScreen> {
         ),
         TextButton(
             onPressed: () {
-              Navigator.pushNamed(context, "/loading_screen");
+              WeatherModel().getLocationWeather().then((d){
+                setState(() {
+                  widget.locationScreenData = LocationScreenData(d['main']['temp'], d['name']);
+                });
+              });
+              // Navigator.pushNamed(context, "/loading_screen");
             },
             child: const Text(
               "ENABLE",
@@ -67,11 +72,6 @@ class _LocationScreenState extends State<LocationScreen> {
             ))
       ],
     );
-  }
-  dynamic _getData() async{
-    WeatherModel weatherModel =  WeatherModel();
-    var data = await weatherModel.getLocationWeather();
-    return data;
   }
 
 

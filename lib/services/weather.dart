@@ -15,6 +15,14 @@ class WeatherModel {
     return networkHelper.getData();
 
   }
+  Future<dynamic> getCityWeather(String city) async{
+    Location location = Location();
+    await location.determinePosition();
+    String url = '$openWeatherMapURL?q=$city&appid=$apiKey';
+    NetworkHelper networkHelper = NetworkHelper(url);
+    return networkHelper.getData();
+
+  }
   String getWeatherIcon(int condition) {
 
     if (condition < 300) {
